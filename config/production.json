@@ -1,0 +1,13 @@
+{
+    "cookie_secret": "a big fat dark image",
+    "session": {
+        "key": "a big fat dark image",
+        "secret": "a big fat dark image"
+    },
+    "request_timeout": 1000,
+    "port": "{{PORT}}",
+    "mongodb": {
+        "uri": "{{MONGOLAB_URI}}"
+    },
+    "character_encoding": "utf-8"
+}
