@@ -1,7 +1,11 @@
-module.exports = function (app, homeController, userController, todoController, apiController) {
+module.exports = function (app, homeController, userController, todoController, apiController, imageController) {
 
     // Home
     app.get('/', homeController.index);
+
+    //User
+    app.get('/image/get/:id', imageController.image);
+    app.post('/image/upload', imageController.upload);
 
     //User
     app.get('/user', userController.getCurrent);

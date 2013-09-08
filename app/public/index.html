@@ -13,6 +13,7 @@
             <a class="brand" ng-href='/'>Peach: Personal image repository</a>
             <ul class="nav">
                 <li><a ng-href="/todos" ng-show="user.username">My Todos</a></li>
+                <li><a ng-href="/images" ng-show="user.username">Images</a></li>
             </ul>
             <ul class="nav pull-right" >
                 <li ng-hide="user.username"><a ng-href="/login">Login/Register</a> </li>
@@ -32,6 +33,7 @@
 
 </div>
 <script type="text/javascript">
+/*
 
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-39761696-1']);
@@ -43,12 +45,14 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
 
+*/
 </script>
 </body>
-<script src="/js/lib/jquery/jquery.js"></script>
+<script src="/js/lib/jquery/jquery-1.9.1.js"></script>
 <script src="/js/lib/bootstrap/bootstrap.js"></script>
 <script src="/js/lib/angular/angular.js"></script>
 <script src="/js/lib/angular/angular-resource.js"></script>
+<script src="/js/lib/angular/ng-upload.js"></script>
 <script src="/js/app.js"></script>
 <script src="/js/services.js"></script>
 <script src="/js/controllers.js"></script>

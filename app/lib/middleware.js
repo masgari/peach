@@ -29,7 +29,8 @@ module.exports = function (app, config, passportMiddleware ) {
     app.use(connect_timeout({ time:config.request_timeout }));   // request timeouts
     app.use(express.cookieParser());                                    // req.cookies
     app.use(session_middleware);                                        // req.session
-    app.use(express.bodyParser());                                      // req.body & req.files
+    app.use(express.bodyParser({keepExtensions:true}));                 // req.body & req.files
+    app.use(express.limit('5mb'));
     app.use(express.methodOverride());                                  // '_method' property in body (POST -> DELETE / PUT)
     app.use(passportMiddleware.initialize());
     app.use(passportMiddleware.session());

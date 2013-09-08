@@ -89,3 +89,9 @@ function TodosCtrl($scope, $http, Todo) {
 
 }
 
+function ImageCtrl($scope, $ImageService) {
+    $scope.uploadFile = function (content, completed) {
+        console.log(content);
+        $scope.uploadResponse1 = content.msg;
+    };
+}
