@@ -17,7 +17,7 @@ module.exports = function (app, config, Image) {
 
     imageStore.storeImage = function (file) {
         return function (req, res, next) {
-            var writeStream = imageStore.gfs.createWriteStream({filename: file.name, metadata:{userId: req.user.id}});
+            var writeStream = imageStore.gfs.createWriteStream({filename: file.name, metadata: {userId: req.user.id}});
             //console.log('piping file:' + file.path + ' to stream:' + writeStream);
             fs.createReadStream(file.path).pipe(writeStream);
             writeStream.on('close', function (gridFile) {
@@ -35,6 +35,14 @@ module.exports = function (app, config, Image) {
             //return next();
         }
     };
+
+    imageStore.fetchImage = function (id) {
+        return function (req, res, next) {
+            var stream = imageStore.gfs.createReadStream({_id: id});
+            res.setHeader('Content-Type', 'image/png');
+            stream.pipe(res);
+        };
+    }
 
     return imageStore;
 }

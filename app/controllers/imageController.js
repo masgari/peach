@@ -2,9 +2,9 @@ module.exports = function (app, config, imageMiddleware) {
     return {
         image: [function (req, res, next) {
             console.log('getting the image');
-            req.params.id
-
-            res.sendfile(app.set('public') + '/images.html');
+            //req.params.id
+            imageMiddleware.fetchImage(req.params.id)(req,res);
+            //res.sendfile(app.set('public') + '/images.html');
             //next();
         }
         ],
