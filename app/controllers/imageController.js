@@ -1,23 +1,24 @@
-module.exports = function (app, config, imageMiddleware) {
-    return {
-        image: [function (req, res, next) {
-            console.log('getting the image');
-            //req.params.id
-            imageMiddleware.fetchImage(req.params.id)(req,res);
-            //res.sendfile(app.set('public') + '/images.html');
-            //next();
-        }
-        ],
+var mongoose = require('mongoose');
 
-        upload: [function (req, res, next) {
-            console.log('uploading image');
-            //res.setHeader('Content-Type', 'text/html');
-            if (!req.files.file || req.files.file.size == 0)
-                res.send({ msg: 'No file uploaded at ' + new Date().toString() });
-            else {
-                imageMiddleware.storeImage(req.files.file)(req, res);
-            }
-            //next();
-        }]
+module.exports = function (app, Image) {
+    var controller = {};
+
+    controller.image = function (req, res, next) {
+        var stream = Image.findImage({imageId: req.params.id, userId: req.user.id});
+        res.setHeader('Content-Type', 'image/png');
+        stream.pipe(res);
     };
-};
+
+    controller.upload = function (req, res, next) {
+        console.log('uploading image');
+        //res.setHeader('Content-Type', 'text/html');
+        if (!req.files.file || req.files.file.size == 0)
+            res.send({ msg: 'No file uploaded at ' + new Date().toString() });
+        else {
+            Image.storeImage(req.files.file, req.user.id);
+            res.redirect('/images');
+        }
+        //next();
+    };
+    return controller;
+}

@@ -3,9 +3,9 @@ module.exports = function (app, homeController, userController, todoController, 
     // Home
     app.get('/', homeController.index);
 
-    //User
-    app.get('/image/get/:id', imageController.image);
-    app.post('/image/upload', imageController.upload);
+    //Image
+    app.get('/image/get/:id', ensureAuthenticated, imageController.image);
+    app.post('/image/upload', ensureAuthenticated, imageController.upload);
 
     //User
     app.get('/user', userController.getCurrent);
