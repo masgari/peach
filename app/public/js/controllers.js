@@ -89,9 +89,18 @@ function TodosCtrl($scope, $http, Todo) {
 
 }
 
-function ImageCtrl($scope, $ImageService) {
+function ImageCtrl($scope, PeachImage) {
+    //get images from server
+    getImagesFromServer()
+
     $scope.uploadFile = function (content, completed) {
         console.log(content);
         $scope.uploadResponse1 = content.msg;
     };
+
+    function getImagesFromServer() {
+        PeachImage.query(function (data) {
+            $scope.images = data;
+        });
+    }
 }

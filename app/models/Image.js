@@ -38,6 +38,11 @@ module.exports = function (app, config) {
 
     };
 
+    ImageSchema.statics.findUserImages = function(userId, piCallback) {
+        var query = {'metadata.userId':userId};
+        ImageSchema.gfs.files.find(query).toArray(piCallback);
+    }
+
 
     /**
      * Lookup image in mongo gridfs

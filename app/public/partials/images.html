@@ -1,5 +1,10 @@
 <div class="span10">
-    <h2>Collections</h2>
+    <h2>My Images</h2>
+    <div ng-repeat="img in images">
+        <img ng-src="api/Image/{{img._id}}"/>
+        <br>
+        {{img}}
+    </div>
     <form class="form-horizontal" action="/image/upload" ng-upload method="post" enctype="multipart/form-data">
         <fieldset>
             <legend>Upload new image</legend>

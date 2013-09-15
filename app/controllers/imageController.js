@@ -20,5 +20,14 @@ module.exports = function (app, Image) {
         }
         //next();
     };
+
+    controller.listUserImages = function(req, res, next) {
+        console.log("listing images for user:", req.user.id);
+        return Image.findUserImages(req.user.id, function (err, images) {
+            if (err) return next(err);
+            console.log('results=', images);
+            return res.json(images);
+        });
+    }
     return controller;
 }
