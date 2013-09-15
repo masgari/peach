@@ -3,7 +3,15 @@
     <div ng-repeat="img in images">
         <img ng-src="api/Image/{{img._id}}"/>
         <br>
-        {{img}}
+        <div class="clearfix">
+            <div class="span7 pull-left well well-small">
+                {{img}}
+            </div>
+            <div class="span2 pull-right">
+                <button class="btn btn-danger" ng-click="removeImage($index)">Remove</button>
+            </div>
+
+        </div>
     </div>
     <form class="form-horizontal" action="/image/upload" ng-upload method="post" enctype="multipart/form-data">
         <fieldset>

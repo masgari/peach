@@ -8,6 +8,7 @@ module.exports = function (app, homeController, userController, todoController, 
     app.post('/image/upload', ensureAuthenticated, imageController.upload);
     app.get('/api/Image', ensureAuthenticated, imageController.listUserImages);
     app.get('/api/Image/:id', ensureAuthenticated, imageController.image);
+    app.del('/api/Image/:id', ensureAuthenticated, imageController.preDeleteImage, apiController.destroy);
 
     //User
     app.get('/user', userController.getCurrent);

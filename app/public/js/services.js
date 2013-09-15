@@ -7,8 +7,8 @@ angular.module('myApp.services', ['ngResource'])
         });
     });
 
-angular.module('myApp.services', ['ngResource'])
+angular.module('myApp.peachImageService', ['ngResource'])
     .factory('PeachImage', function ($resource) {
-        return $resource('api/Image/:id', {}, {
-        });
+        var PeachImage =  $resource('api/Image/:id');
+        return PeachImage;
     });

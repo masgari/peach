@@ -9,5 +9,8 @@
     "mongodb":{
         "uri":"mongodb://localhost:27017/peach-dev"
     },
+    "peach": {
+        "extractExifTags":true
+    },
     "character_encoding":"utf-8"
 }

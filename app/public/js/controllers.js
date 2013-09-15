@@ -10,7 +10,7 @@ function LoginCtrl($scope, $http, $rootScope, $location) {
 
     //figure out where we should redirect to once the user has logged in.
     if (!$rootScope.redirect || $rootScope.redirect == '/login') {
-        $rootScope.redirect = '/todos';
+        $rootScope.redirect = '/images';
     }
 
     $scope.submit = function (user) {
@@ -33,7 +33,7 @@ function RegisterCtrl($scope, $http, $rootScope, $location) {
         $http.post('/user/register', $scope.user)
             .success(function (data) {
                 $rootScope.user.username = $scope.user.username;
-                $location.path('/todos');
+                $location.path('/images');
             })
             .error(function (data, status, headers, config) {
                 $scope.statusMessage = data;
@@ -44,7 +44,7 @@ function RegisterCtrl($scope, $http, $rootScope, $location) {
 function TodosCtrl($scope, $http, Todo) {
 
     //get the todos from server
-    getTodosFromServer()
+    getTodosFromServer();
 
     $scope.newTodo = {};
 
@@ -63,12 +63,12 @@ function TodosCtrl($scope, $http, Todo) {
             function (data, status, headers, config) {
                 $scope.statusMessage = data;
             });
-    }
+    };
 
     //we'll call this function when the checkbox of a todo is checked
     $scope.markComplete = function (todo) {
         todo.$save({id: todo._id});
-    }
+    };
 
     //remove complete todos
     $scope.removeComplete = function () {
@@ -79,7 +79,7 @@ function TodosCtrl($scope, $http, Todo) {
                 });
             }
         })
-    }
+    };
 
     function getTodosFromServer() {
         Todo.query(function (data) {
@@ -91,11 +91,23 @@ function TodosCtrl($scope, $http, Todo) {
 
 function ImageCtrl($scope, PeachImage) {
     //get images from server
-    getImagesFromServer()
+    getImagesFromServer();
 
     $scope.uploadFile = function (content, completed) {
         console.log(content);
         $scope.uploadResponse1 = content.msg;
+    };
+
+    $scope.removeImage = function(index) {
+        if (!$scope.images || index < 0 || index >= $scope.images.length) {
+            return;
+        }
+        var del = $scope.images[index];
+        console.log('deleting image:'+del._id);
+        console.log('PeachImage:'+PeachImage);
+        PeachImage.delete({id:del._id}, function() {
+            $scope.images.splice(index, 1);
+        });
     };
 
     function getImagesFromServer() {
