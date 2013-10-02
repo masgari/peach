@@ -1,0 +1,52 @@
+<div class="col-md-12">
+    <div class="row">
+        <form class="form-inline"  role="form" action="/image/upload" ng-upload method="post" enctype="multipart/form-data">
+            <div class="input-group col-lg-5 well well-sm">
+                <input id="file" name="file" class="input-file form-control input-lg" type="file"/>
+                <span class="input-group-btn">
+                    <button type="submit" id="btnUpload" name="btnUpload" class="btn btn-success input-lg">Upload</button>
+                </span>
+            </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <div class="row Collage effect-parent">
+        <img class="peach" ng-repeat="img in images" ng-src="api/Image/{{img._id}}" width="{{img.metadata.width}}" height="{{img.metadata.height}}"/>
+    </div>
+</div>
+<script type="text/javascript">
+
+    // All images need to be loaded for this plugin to work so
+    // we end up waiting for the whole window to load in this example
+    //$(window).load(function () {
+    $(document).ready(function(){
+        collage();
+        //$('.Collage').collageCaption();
+    });
+    //});
+
+
+    // Here we apply the actual CollagePlus plugin
+    function collage() {
+        $('.Collage').removeWhitespace().collagePlus(
+                {
+                    'fadeSpeed'     : 2000,
+                    'targetHeight'  : 200,
+                    'effect'        : 'effect-6',
+                    'direction'     : 'vertical'
+                }
+        );
+    };
+
+    // This is just for the case that the browser window is resized
+    var resizeTimer = null;
+    $(window).bind('resize', function() {
+        // hide all the images until we resize them
+        $('.Collage .Image_Wrapper').css("opacity", 0);
+        // set a timer to re-apply the plugin
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(collage, 200);
+    });
+
+</script>

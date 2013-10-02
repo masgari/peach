@@ -6,10 +6,11 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.peachImageSer
 
         //The routes that our angular app will handle
         $routeProvider
-            .when('/', { templateUrl: '/partials/index.html', controller: IndexCtrl })
+            .when('/', { templateUrl: '/partials/album.html', controller: ImageCtrl })
             .when('/login', { templateUrl: '/partials/login.html'})
             .when('/todos', { templateUrl: '/partials/todos.html', controller: TodosCtrl })
             .when('/images', { templateUrl: '/partials/images.html', controller: ImageCtrl })
+            .when('/album', { templateUrl: '/partials/album.html', controller: ImageCtrl })
             .otherwise({ templateUrl: '/partials/404.html' });
 
         //gets rid of the # in urls

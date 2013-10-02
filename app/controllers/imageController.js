@@ -37,10 +37,10 @@ module.exports = function (app, Image) {
     };
 
     controller.preDeleteImage = function (req, res, next) {
-        //try to find a to-do that matches the ID in the uri and belongs to the user who is logged in
+        //try to find an image that matches the ID in the uri and belongs to the user who is logged in
         Image.find({_id: req.params.id, userId: req.user.id}, function (err, results) {
             if (err) return next(err);
-            if(!results) return res.send(401); //trying to update a to-do that isn't yours?!?!?!
+            if(!results) return res.send(401); //trying to delete another user image?
             req.Model = Image;
             next();
         });

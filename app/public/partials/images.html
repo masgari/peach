@@ -1,7 +1,7 @@
 <div class="span10">
     <h2>My Images</h2>
     <div ng-repeat="img in images">
-        <img ng-src="api/Image/{{img._id}}"/>
+        <img ng-src="api/Image/{{img._id}}" width="{{img.metadata.width}}" height="{{img.metadata.height}}"/>
         <br>
         <div class="clearfix">
             <div class="span7 pull-left well well-small">
