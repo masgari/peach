@@ -23,7 +23,7 @@ module.exports = function (app, Image) {
             res.send({ msg: 'No file uploaded at ' + new Date().toString() });
         else {
             Image.storeImage(req.files.file, req.user.id);
-            res.redirect('/images');
+            res.redirect('/album');
         }
         //next();
     };

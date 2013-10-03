@@ -10,7 +10,7 @@ function LoginCtrl($scope, $http, $rootScope, $location) {
 
     //figure out where we should redirect to once the user has logged in.
     if (!$rootScope.redirect || $rootScope.redirect == '/login') {
-        $rootScope.redirect = '/images';
+        $rootScope.redirect = '/album';
     }
 
     $scope.submit = function (user) {
@@ -33,7 +33,7 @@ function RegisterCtrl($scope, $http, $rootScope, $location) {
         $http.post('/user/register', $scope.user)
             .success(function (data) {
                 $rootScope.user.username = $scope.user.username;
-                $location.path('/images');
+                $location.path('/album');
             })
             .error(function (data, status, headers, config) {
                 $scope.statusMessage = data;
@@ -89,13 +89,18 @@ function TodosCtrl($scope, $http, Todo) {
 
 }
 
-function ImageCtrl($scope, PeachImage) {
+function AlbumListCtrl($scope,$location, PeachImage) {
+
+}
+
+function AlbumCtrl($scope, PeachImage) {
     //get images from server
     getImagesFromServer();
 
     $scope.uploadFile = function (content, completed) {
         console.log(content);
         $scope.uploadResponse1 = content.msg;
+        //on server side it will be redirected to /album
     };
 
     $scope.removeImage = function(index) {
@@ -114,5 +119,18 @@ function ImageCtrl($scope, PeachImage) {
         PeachImage.query(function (data) {
             $scope.images = data;
         });
+    }
+}
+
+function PhotoDetailCtrl($scope,$routeParams,$location, PeachImage) {
+    $scope.photoId = $routeParams.photoId;
+    console.log('photo:'+$scope.photoId);
+
+    $scope.removePhotoById = function() {
+        console.log('PeachImage, removing photo:'+$scope.photoId);
+        PeachImage.delete({id:$scope.photoId}, function() {
+            $location.path('/album');
+        });
+
     }
 }
