@@ -7,6 +7,7 @@
 var mongoose = require('mongoose'),
     Grid = require('gridfs-stream'),
     pis = require('pis-client'),
+    pfs = require('pfs-client'),
     fs = require('fs');
 
 Grid.mongo = mongoose.mongo;
@@ -29,31 +30,22 @@ module.exports = function (app, config) {
         console.log('GridFS configured.');
     });
 
-    ImageSchema.pisClient = pis.createClient();
-    ImageSchema.pisClient.on('connect', function () {
-        ImageSchema.pisConnected = true;
-        console.log('Connected to PIS Thrift server.');
-    });
+    //create image server client
+    ImageSchema.imageClient = pis.createClient();
+    ImageSchema.imageServerConnected = false;
+    configureThriftClient(ImageSchema.imageClient, ImageSchema.imageServerConnected , 'ImageServer');
 
-    ImageSchema.pisClient.on('error', function (e) {
-        console.log('Error in pis-client:', e);
-    });
-
-    ImageSchema.pisClient.on('end', function () {
-        console.log('pis-client ended.');
-    });
-
-    ImageSchema.pisClient.connect(function (err) {
-        console.log('Error in pis-client connect:%s\n', err);
-    });
-
+    //create face server client
+    ImageSchema.faceClient = pfs.createClient();
+    ImageSchema.faceServerConnected = false;
+    configureThriftClient(ImageSchema.faceClient, ImageSchema.faceServerConnected , 'FaceServer');
 
     ImageSchema.statics.storeImage = function (file, userId) {
         writeImage(ImageSchema.gfs, file, userId);
     };
 
     ImageSchema.statics.findUserImages = function (userId, piCallback) {
-        var query = {'metadata.userId':userId, 'metadata.type':'cartoonized'};
+        var query = {'metadata.userId':userId, 'metadata.type':'resized'};
         ImageSchema.gfs.files.find(query).toArray(piCallback);
     };
 
@@ -83,8 +75,8 @@ module.exports = function (app, config) {
         writeStream.on('close', function (gridFile) {
             console.log('new uploaded image id:', gridFile._id);
             //resizing, for test
-            //resizeImage(gridFile._id, userId, file.name);
-            cartoonizeImage(gridFile._id, userId, file.name);
+            resizeImage(gridFile._id, userId, file.name);
+            //cartoonizeImage(gridFile._id, userId, file.name);
 
             //delete the file
             fs.unlink(file.path, function (err) {
@@ -103,7 +95,7 @@ module.exports = function (app, config) {
         //when all data read
         stream.on('end', function() {
             var data = Buffer.concat(buf);
-            ImageSchema.pisClient.resize(data, 500, 300, function (err, resizeData, w, h) {
+            ImageSchema.imageClient.resize(data, 500, 300, function (err, resizeData, w, h) {
                 if (err) {
                     console.log('error in resize:%s\n', err);
                 } else {
@@ -127,7 +119,7 @@ module.exports = function (app, config) {
         //when all data read
         stream.on('end', function() {
             var data = Buffer.concat(buf);
-            ImageSchema.pisClient.cartoonize(data, 500, 300, function (err, resizeData, w, h) {
+            ImageSchema.imageClient.cartoonize(data, 500, 300, function (err, resizeData, w, h) {
                 if (err) {
                     console.log('error in cartoonize:%s\n', err);
                 } else {
@@ -138,6 +130,25 @@ module.exports = function (app, config) {
                     writeStream.end();
                 }
             });
+        });
+    }
+
+    function configureThriftClient(client, connectedVar, label) {
+        client.on('connect', function () {
+            connectedVar = true;
+            console.log('Connected to %s Thrift server.', label);
+        });
+
+        client.on('error', function (e) {
+            console.log('Error in %s:',label, e);
+        });
+
+        client.on('end', function () {
+            console.log('%s ended.', label);
+        });
+
+        client.connect(function (err) {
+            console.log('Error in %s connect:%s\n', label, err);
         });
     }
 
