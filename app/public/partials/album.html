@@ -1,25 +1,52 @@
+<script src="/js/lib/collage-plus/jquery.collagePlus.js"></script>
+<script src="/js/lib/collage-plus/jquery.removeWhitespace.js"></script>
+<script src="/js/lib/collage-plus/jquery.collageCaption.js"></script>
+
 <div class="col-md-12">
     <div class="row">
-        <form class="form-inline" role="form" action="/image/upload" ng-upload method="post"
-              enctype="multipart/form-data">
-            <div class="input-group col-lg-5 well well-sm">
-                <input id="file" name="file" class="input-file form-control input-lg" type="file"/>
+        <div class="col-lg-10 centered">
+            <ul class="list-unstyled">
+                <li>
+                    <form class="form-inline" role="form" action="#" ng-upload method="post">
+                        <div class="input-group col-lg-5 well well-sm">
+                            <input id="search" name="search" class="input-search form-control input-lg" type="text"/>
+                <span class="input-group-btn">
+                    <button type="submit" id="btnSearch" name="btnSearch" class="btn btn-primary input-lg">Search
+                    </button>
+                </span>
+                        </div>
+                        </fieldset>
+                    </form>
+                </li>
+                <li>
+                    <form class="form-inline" role="form" action="/image/upload" ng-upload method="post"
+                          enctype="multipart/form-data">
+                        <div class="input-group col-lg-5 well well-sm">
+                            <input id="file" name="file" class="input-file form-control input-lg" type="file"/>
                 <span class="input-group-btn">
                     <button type="submit" id="btnUpload" name="btnUpload" class="btn btn-success input-lg">Upload
                     </button>
                 </span>
-            </div>
-            </fieldset>
-        </form>
+                        </div>
+                        </fieldset>
+                    </form>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <section class="row Collage effect-parent">
-        <div class="Image_Wrapper" ng-repeat="img in images"
-             data-caption="Image">
+        <div class="Image_Wrapper" ng-repeat="img in images">
             <a href="/photo/{{img.metadata.sourceId}}">
                 <img class="peach" ng-src="api/Image/{{img._id}}"
                      width="{{img.metadata.width}}" height="{{img.metadata.height}}"/>
             </a>
+
+            <div class='description'>
+                <button class="btn btn-danger" ng-click="removePhoto($index)"><i
+                        class="icon glyphicon-remove-circle"></i></button>
+                <button class="btn btn-success"><i class="icon-pencil"></i></button>
+            </div>
         </div>
     </section>
 </div>
@@ -27,12 +54,9 @@
 
     // All images need to be loaded for this plugin to work so
     // we end up waiting for the whole window to load in this example
-    //$(window).load(function () {
     $(document).ready(function () {
         collage();
-        //$('.Collage').collageCaption();
     });
-    //});
 
 
     // Here we apply the actual CollagePlus plugin
@@ -41,7 +65,7 @@
                 {
                     'fadeSpeed': 2000,
                     'targetHeight': 200,
-                    'effect': 'effect-6',
+                    'effect': 'effect-2',
                     'direction': 'vertical'
                 }
         );

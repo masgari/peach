@@ -21,6 +21,7 @@
     "ngUpload": "0.3.17",
     "gridfs-stream": "0.4.0",
     "pis-client": "~0.0.1",
+    "pfs-client": "~0.0.1",
     "exif": "0.3.4"
   },
   "devDependencies": {

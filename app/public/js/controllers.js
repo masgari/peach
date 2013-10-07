@@ -103,7 +103,7 @@ function AlbumCtrl($scope, PeachImage) {
         //on server side it will be redirected to /album
     };
 
-    $scope.removeImage = function(index) {
+    $scope.removePhoto = function(index) {
         if (!$scope.images || index < 0 || index >= $scope.images.length) {
             return;
         }
