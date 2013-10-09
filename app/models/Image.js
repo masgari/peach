@@ -7,7 +7,6 @@
 var mongoose = require('mongoose'),
     Grid = require('gridfs-stream'),
     pis = require('pis-client'),
-    pfs = require('pfs-client'),
     fs = require('fs');
 
 Grid.mongo = mongoose.mongo;
@@ -35,10 +34,6 @@ module.exports = function (app, config) {
     ImageSchema.imageServerConnected = false;
     configureThriftClient(ImageSchema.imageClient, ImageSchema.imageServerConnected , 'ImageServer');
 
-    //create face server client
-    ImageSchema.faceClient = pfs.createClient();
-    ImageSchema.faceServerConnected = false;
-    configureThriftClient(ImageSchema.faceClient, ImageSchema.faceServerConnected , 'FaceServer');
 
     ImageSchema.statics.storeImage = function (file, userId) {
         writeImage(ImageSchema.gfs, file, userId);
