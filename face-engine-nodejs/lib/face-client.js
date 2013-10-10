@@ -63,7 +63,11 @@ function configureClient(faceClient, redisClient, clientPrefix) {
         faceClient.emit(clientPrefix +'-ready');
     });
 
-    redisClient.on("message", function (pattern, channel, message) {
+    redisClient.on("message", function (
+
+
+        channel, message) {
+        console.log("message", clientPrefix+"-channel:"+channel+", message:"+message);
         faceClient.emit(clientPrefix +'-message', message);
     });
 }
@@ -84,7 +88,8 @@ Client.prototype.end = function (callback) {
 Client.prototype.submitFaceDetectJob = function(imageId, userId, callback) {
     if (this.faceEngineClient) {
         message = {imageId:imageId, userId:userId, submitDate:Date.now()};
-        this.faceEngineClient.publish(this.options.faceDetectChannelName, message)
+        json = JSON.stringify(message);
+        this.faceEngineClient.publish(this.options.faceDetectChannelName, json);
         callback(null);
     } else {
         callback(new Error('Not connected yet.'));

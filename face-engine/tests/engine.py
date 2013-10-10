@@ -8,6 +8,8 @@ from pymongo import database
 from bson.objectid import ObjectId
 import gridfs
 import time
+import json
+from datetime import datetime
 
 PEACH_CHANNEL_FACE_DETECT = 'peach-detect-face-jobs'
 PEACH_CHANNEL_JOB_DONE = 'peach-jobs-done'
@@ -28,8 +30,8 @@ class FaceEngine():
     def stop(self):
         self.running = False
 
-    def handle(self, item):
-        print item['channel'], ":", item['data']
+    def handle(self, message, job):
+        print message['channel'], ":", job
         return True
 
     def start(self):
@@ -56,8 +58,13 @@ class RedisChannelListener(threading.Thread):
                 print self, 'killed'
                 break
             elif item['type'] == 'message':
-                if self.engine.handle(item):
-                    self.redis.publish(PEACH_CHANNEL_JOB_DONE, item)
+                job = json.loads(item['data'])
+                if self.engine.handle(item, job):
+                    response = {"imageId":job["imageId"], "userId":job["userId"], "submitDate":job["submitDate"]}
+                    print response
+                    jr = json.dumps(response)
+                    print jr
+                    self.redis.publish(PEACH_CHANNEL_JOB_DONE, jr)
 
 
 if __name__ == "__main__":
