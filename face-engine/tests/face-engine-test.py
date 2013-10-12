@@ -1,8 +1,11 @@
 __author__ = 'mamad'
 
-import redis
-from engine import PEACH_CHANNEL_FACE_DETECT
 import time
+
+import redis
+
+from main.engine import PEACH_CHANNEL_FACE_DETECT
+
 
 if __name__ == '__main__':
     r = redis.Redis()

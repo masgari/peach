@@ -1,4 +1,3 @@
-
 var redis = require("redis"),
     util = require('util'),
     events = require('events');
@@ -44,7 +43,7 @@ Client.prototype.connect = function (callback) {
     configureClient(self, jobDoneClient, 'job-done');
     configureClient(self, faceEngineClient, 'face');
 
-    jobDoneClient.on('ready', function(){
+    jobDoneClient.on('ready', function () {
         jobDoneClient.subscribe(self.options.jobDoneChannelName);
     });
 
@@ -55,20 +54,17 @@ Client.prototype.connect = function (callback) {
 
 function configureClient(faceClient, redisClient, clientPrefix) {
     redisClient.on("error", function (err) {
-        faceClient.emit(clientPrefix +'-error', err);
+        faceClient.emit(clientPrefix + '-error', err);
     });
 
     redisClient.on("ready", function () {
         //console.log("RRR", clientPrefix+"-ready\n");
-        faceClient.emit(clientPrefix +'-ready');
+        faceClient.emit(clientPrefix + '-ready');
     });
 
-    redisClient.on("message", function (
-
-
-        channel, message) {
-        console.log("message", clientPrefix+"-channel:"+channel+", message:"+message);
-        faceClient.emit(clientPrefix +'-message', message);
+    redisClient.on("message", function (channel, message) {
+        //console.log("message", clientPrefix+"-channel:"+channel+", message:"+message);
+        faceClient.emit(clientPrefix + '-message', message);
     });
 }
 
@@ -85,9 +81,9 @@ Client.prototype.end = function (callback) {
     }
 };
 
-Client.prototype.submitFaceDetectJob = function(imageId, userId, callback) {
+Client.prototype.submitFaceDetectJob = function (imageId, userId, callback) {
     if (this.faceEngineClient) {
-        message = {imageId:imageId, userId:userId, submitDate:Date.now()};
+        message = {imageId: imageId, userId: userId, submitDate: Date.now()};
         json = JSON.stringify(message);
         this.faceEngineClient.publish(this.options.faceDetectChannelName, json);
         callback(null);

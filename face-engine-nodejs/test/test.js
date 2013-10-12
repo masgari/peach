@@ -55,6 +55,10 @@ module.exports = {
         should.exist(this.client.submitFaceDetectJob);
         this.client.on('job-done-message', function(message){
             console.log('message received from redis job-done, message=', message);
+            test.ok(message != null);
+            var msg = JSON.parse(message);
+            test.equals(msg.imageId, 'imageId');
+            test.equals(msg.userId, 'userId');
             test.done();
         });
         this.client.submitFaceDetectJob('imageId', 'userId', function (err) {

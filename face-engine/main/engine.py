@@ -9,11 +9,14 @@ from bson.objectid import ObjectId
 import gridfs
 import time
 import json
-from datetime import datetime
+import cv
 
 PEACH_CHANNEL_FACE_DETECT = 'peach-detect-face-jobs'
 PEACH_CHANNEL_JOB_DONE = 'peach-jobs-done'
 KILL_CMD = 'KILL'
+
+class FaceDetector():
+    def __init__(self, haarcascades='/usr/local/share/OpenCV/haarcascades/haarcascade_frontalface_alt.xml'):
 
 class MongoImageManager():
     def __init__(self, client, dbName, gfsCollectionName):

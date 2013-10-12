@@ -1,0 +1,5 @@
+About images
+================================================
+Images in this folder are taken from various websites. The images are publicly available at the time.
+
+uwa-f2f.jpg is taken from http://www.w3.org/2007/uwa/meetings/2008/seoul/uwa-f2f.jpg at 12 Oct 2013 (http://www.w3.org/blog/uwa-more/)
