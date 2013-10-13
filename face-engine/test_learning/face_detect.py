@@ -32,7 +32,7 @@ def detect(image):
                          8,
                          0)
 print 'face detection by opencv2'
-src = 'images/*.jpg'
+src = '../tests/images/*.jpg'
 images = glob.glob(src)
 
 for f in images:
